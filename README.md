@@ -97,15 +97,15 @@ The Code Institutes learning objectives for this project were as follows:
 ### ❄️ Wireframes
 
 Landing Page Wireframe
-![wireframe landing page](readme-images\wireframe-landing-page.png)<div align="center"><br>
+![wireframe landing page](readme-images/wireframe-landing-page.png)<div align="center"><br>
 
 Main Page Wireframe
-![wireframe main page](readme-images\wireframe-main-page.png)<div align="center">
+![wireframe main page](readme-images/wireframe-main-page.png)<div align="center">
 
 ### ❄️ Colour Palette
-![colour-pallette](readme-images\colour-pallette.png)<div align="center">
+![colour-pallette](readme-images/colour-pallette.png)<div align="center">
 ### ❄️ Font Typography
-![fonts](readme-images\fonts.png)<div align="center">
+![fonts](readme-images/fonts.png)<div align="center">
 
 ---
 
