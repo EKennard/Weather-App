@@ -38,3 +38,14 @@
   font-weight: <weight>;
   font-style: normal;
 } */
+
+body {
+  background-color: var(--light-bg-color);
+}
+
+h1,
+h2,
+p {
+  font-family: var(--primary-font);
+  color: --primary-font
+}

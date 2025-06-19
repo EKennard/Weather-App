@@ -74,7 +74,7 @@ The Code Institutes learning objectives for this project were as follows:
 
  ### ❄️ Must haves
  ☁️ As a user, I want to view the current weather for my location, so I can decide what to wear or whether to bring an umbrella.<br>
- ☁️ As a planner, I want to view a 7-day weather forecast, so I can prepare for upcoming events or outings.<br>
+ ☁️ As a planner, I want to view a 7-day weather forecast, so I can view a 7-day weather forecast<br>
  ☁️ As a user, I want to search for weather in different cities, so I can check conditions for places I plan to travel.<br>
 ☁️ As a mobile user, I want the weather page to adjust neatly to my screen size, so I can easily use it on the go.<br>
 ☁️ As a visually impaired user, I want to navigate the site using screen readers and keyboard shortcuts, so the experience is inclusive.<br>
