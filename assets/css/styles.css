@@ -11,6 +11,9 @@
   --light-bg-color: #48cae4;
   --highlight-color: #446e76;
   --misc-color: #063364;
+
+  --bg-color: var(--light-bg-color);
+  --font-color: var(--dark-font-color);
 }
 
 /* .huninn-regular {
