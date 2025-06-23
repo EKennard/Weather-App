@@ -1,10 +1,12 @@
 const apiKey = 'e7d1f1b7c7046afd50a140282e07d35c';
 // Get references to the input and button in your HTML
 const searchButton = document.getElementById('search');
-const inputText = document.getElementById('input-text');
+const inputText = document.getElementById('bg-toggle');
+const container = document.getElementById("weather-animations");
 
 // When the user clicks the search button, get the city and fetch weather
 searchButton.addEventListener('click', () => {
+    clearAnimations();
     const city = inputText.value;
     if (city) {
         fetchWeatherData(city);
@@ -15,8 +17,8 @@ searchButton.addEventListener('click', () => {
 // This function fetches current weather data for the city from OpenWeatherMap
 async function fetchWeatherData(city) {
     // Build the API URL with the city and your API key
-    
-   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
@@ -25,6 +27,7 @@ async function fetchWeatherData(city) {
         }
         const data = await response.json();
         displayWeatherData(data);
+        return data;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
@@ -42,19 +45,64 @@ async function fetchForecastData(city) {
         }
         const data = await response.json();
         displayForecastData(data);
+        return data;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
 }
 
+// async function test() {
+//     let data = await fetchWeatherData("Berlin");
+//     console.log(data);
+//     let dt = data.dt
+//     console.log(dt)
+//     let timezone = data.timezone * 1000;
+//     let dateTime = new Date(dt * 1000 + timezone);
+//     console.log(dateTime);
+//     console.log(timezone)
+//     let formatDate = dateTime.toLocaleDateString()
+//     console.log(formatDate);
+//     console.log(dateTime.toLocaleTimeString())
+// }
+// test()
+
 // This function displays the current weather info on the page
+
 function displayWeatherData(data) {
+
+    // date and time with time zone
+    let dt = data.dt;
+    let timezone = data.timezone * 1000;
+    let dateTime = new Date(dt * 1000 + timezone);
+    let formatDate = dateTime.toLocaleTimeString(undefined, { timeZoneName: "short" });
+    let localTime = dateTime.toLocaleTimeString(undefined, { timeZoneName: "short" });
+    let localDate = dateTime.toLocaleDateString(undefined, { weekday: "long", year: "numeric",nmonth: "long", day: "numeric"});
+    console.log(localTime);
+    console.log(localDate);
+
     let weatherInfo = document.getElementById('weather-info');
     if (!weatherInfo) {
         weatherInfo = document.createElement('div');
         weatherInfo.id = 'weather-info';
         document.body.appendChild(weatherInfo);
-    }
+    
+    //day/night
+    let now = Math.floor(Date.now() / 1000);
+    let sunrise = data.sys.sunrise;
+    let sunset = data.sys.sunset;
+    let isDaytime = (now > sunrise && now < sunset);
+    if (isDaytime) {
+        document.documentElement.style.setProperty("--bg-color", "var(--light-bg-color)");
+        document.documentElement.style.setProperty("--font-color", "var(--dark-font-color)");
+    } else {
+        document.documentElement.style.setProperty("--bg-color", "var(--dark-bg-color)");
+        document.documentElement.style.setProperty("--font-color", "var(--light-font-color)");
+    }}
+
+    const container = document.getElementById("weather-animations");
+    condition = data.weather[0].main.toLowerCase();
+    animateWeather();
+    
     weatherInfo.innerHTML = `
         <h2>Weather for ${data.name}, ${data.sys.country}</h2>
         <p><strong>Date:</strong> ${localDate}</p>
@@ -111,22 +159,55 @@ function displayForecastData(data) {
     forecastInfo.innerHTML = forecastHTML;
 }
 
-let rainEffect;
-let cloudEffect;
+let rainInterval;
+let cloudInterval;
+let condition = "";
 
-// date and time with time zone
-const localTime = new Date().toLocaleTimeString(undefined, { timeZoneName: "short" });
-const localDate = new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-
-//day/night
-let now = Math.floor(Date.now() / 1000);
-let sunrise = data.sys.sunrise;
-let sunset = data.sys.sunset;
-let isDaytime = (now > sunrise && now < sunset);
-if (isDaytime) {
-    document.documentElement.style.setProperty("--bg-color", "const(--light-bg-color)");
-    document.documentElement.style.setProperty("--font-color", "const(--dark-font-color)");
-} else {
-    document.documentElement.style.setProperty("--bg-color", "const(--dark-bg-color)");
-    document.documentElement.style.setProperty("--font-color", "const(--light-font-color)");
+function animateWeather() {
+    clearAnimations();
+    if (condition.includes("rain")) {
+        rainInterval = setInterval(raindrops, 200);
+    }
+    if (condition.includes("cloud")) {
+        cloudInterval = setInterval(clouds, 5000);
+    }
 }
+
+function clearAnimations() {
+    clearInterval(rainInterval);
+    clearInterval(cloudInterval);
+    const raindrops = container.querySelectorAll('.raindrop');
+    const clouds = container.querySelectorAll('.cloud');
+    raindrops.forEach(drop => drop.remove());
+    clouds.forEach(cloud => cloud.remove());
+}
+
+function raindrops() {
+    let drop = document.createElement("div");
+    drop.classList.add("raindrop");
+    let randomLeft = Math.random() * window.innerWidth;
+    drop.style.left = randomLeft + "px";
+    let fallSpeed = 0.5 + Math.random() * 0.5;
+    drop.style.animationDuration = fallSpeed + "s";
+    container.appendChild(drop);
+    setTimeout(function () {
+        container.removeChild(drop);
+    }, 1000);
+};
+
+function clouds() {
+    let cloud = document.createElement("div");
+    cloud.classList.add("cloud");
+    cloud.style.left = "-200px";
+    let randomTop = Math.random() * window.innerHeight;
+    cloud.style.top = randomTop + "px";
+    let speed = 20 + Math.random() * 20;
+    cloud.style.animationDuration = speed + "s";
+    container.appendChild(cloud);
+    setTimeout(function () {
+        container.removeChild(cloud);
+    }, 50000);
+}
+
+animateWeather();
+
