@@ -80,3 +80,101 @@ h1 {
   border: none;
 }
 
+/* Weather info card styling */
+#weather-info {
+  background-color: var(--highlight-color);
+  color: var(--light-font-color);
+  font-family: var(--secondary-font);
+  text-align: center;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+}
+
+#weather-icon {
+  width: 80px;
+  height: 80px;
+  margin: 1rem auto;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  background-color: var(--light-bg-color);
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+  
+}
+
+#weather-info p {
+  margin: 0.5rem 0;
+}
+
+      #temperature {
+          font-size: 1.2rem;
+  color: var(--dark-font-color);
+      }
+      #feels-like {
+  font-size: 1.2rem;
+  color: var(--dark-font-color);
+      }
+      #weather {
+  font-size: 1.2rem;
+  color: var(--dark-font-color);
+      }
+      #humidity {
+  font-size: 1.2rem;
+  color: var(--dark-font-color);
+      }
+      #wind-speed {
+  font-size: 1.2rem;
+  color: var(--dark-font-color);
+      }
+
+      /* Forecast section overall */
+#forecast-info {
+  background-color: var(--highlight-color);
+  color: var(--light-font-color);
+  font-family: var(--secondary-font);
+  text-align: center;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+}
+
+/* Headings inside forecast */
+#forecast-info h2 {
+  font-family: var(--primary-font);
+  color: var(--light-font-color);
+  margin-bottom: 1.5rem;
+}
+
+/* Forecast cards */
+#forecast-info .col-md-4 {
+  background-color: var(--highlight-color); /* same as container */
+  color: var(--light-font-color);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  font-family: var(--secondary-font);
+  
+}
+
+/* Forecast date heading */
+#forecast-info .col-md-4 strong {
+  display: block;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+}
+
+.forecast-card {
+  background-color: var(--highlight-color);
+  color: var(--light-font-color);
+  font-family: var(--secondary-font);
+  border-radius: 1rem;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
+}
+
