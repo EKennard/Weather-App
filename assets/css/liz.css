@@ -1,0 +1,41 @@
+.weather-animations {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #1e1e2f;
+  overflow: hidden;
+}
+
+.raindrop {
+  position: absolute;
+  top: -10px;
+  width: 2px;
+  height: 15px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: fall linear;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.cloud {
+  position: absolute;
+  width: 120px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow:
+    30px 10px rgba(255, 255, 255, 0.8),
+    60px 0px rgba(255, 255, 255, 0.8),
+    90px 10px rgba(255, 255, 255, 0.8);
+  animation: moveCloud linear forwards;
+}
+
+@keyframes moveCloud {
+  to {
+    left: 100vw;
+  }
+}
