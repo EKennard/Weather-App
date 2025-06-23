@@ -1,4 +1,4 @@
-![page image](...)<div align="center">
+![page image](readme-images/main.png))<div align="center">
 <h1 align="center">☀️ Weather Web App ❄️</h1>
 <p align="center">☀️❄️☁️🌦️💧🌤️⚡
 
@@ -23,7 +23,7 @@ The live project can be found here: <a target="_blank" href="https://ekennard.gi
 <div align="center">
 **Abduaziz Ahmed**  <br>
 **Elizabeth Kennard** <br>
-**Fatima Mewouo**
+**Fatima Stacpoole**
 
 ---
 
@@ -169,14 +169,19 @@ Testing and debugging was a constant process throughout the project, and was mad
 ## ☀️ Validation
 
 ### ❄️ HTML
-![image](...)<div align="center">
+![image](readme-images/html-validation.png)<div align="center">
+
 ### ❄️ CSS 
-![image](...)<div align="center">
-### ❄️ JavaScript
-![image](...)<div align="center">
+
+<p>
+    <a href="https://jigsaw.w3.org/css-validator/check/referer">
+        <img style="border:0;width:88px;height:31px"
+            src="https://jigsaw.w3.org/css-validator/images/vcss"
+            alt="Valid CSS!" />
+    </a>
+</p>
 
 ---
-
 
 ## ☀️ Future Enhancements
 

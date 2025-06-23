@@ -50,7 +50,7 @@ h1,
 h2,
 p {
   font-family: var(--primary-font);
-  color: --primary-font
+  color: var(--primary-font-color)
 }
 
 .title {

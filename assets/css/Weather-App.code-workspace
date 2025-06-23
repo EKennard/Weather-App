@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "Weather-App",
+			"path": "../.."
+		}
+	],
+	"settings": {
+		"liveServer.settings.port": 5501
+	}
+}
