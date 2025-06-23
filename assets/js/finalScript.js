@@ -172,7 +172,7 @@ function raindrops() {
 function clouds() {
     let cloud = document.createElement("div");
     cloud.classList.add("cloud");
-    cloud.style.left = "-200px";
+    cloud.style.left = "-200px", "10000";
     cloud.style.top = Math.random() * window.innerHeight + "px";
     cloud.style.animationDuration = (20 + Math.random() * 20) + "s";
     container.appendChild(cloud);
