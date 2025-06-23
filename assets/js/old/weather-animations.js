@@ -1,12 +1,10 @@
 const apiKey = 'e7d1f1b7c7046afd50a140282e07d35c';
 // Get references to the input and button in your HTML
 const searchButton = document.getElementById('search');
-const inputText = document.getElementById('bg-toggle');
-const container = document.getElementById("weather-animations");
+const inputText = document.getElementById('input-text');
 
 // When the user clicks the search button, get the city and fetch weather
 searchButton.addEventListener('click', () => {
-    clearAnimations();
     const city = inputText.value;
     if (city) {
         fetchWeatherData(city);
@@ -27,7 +25,6 @@ async function fetchWeatherData(city) {
         }
         const data = await response.json();
         displayWeatherData(data);
-        return data;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
@@ -45,83 +42,42 @@ async function fetchForecastData(city) {
         }
         const data = await response.json();
         displayForecastData(data);
-        return data;
     } catch (error) {
         console.error('There has been a problem with your fetch operation:', error);
     }
 }
 
-// async function test() {
-//     let data = await fetchWeatherData("Berlin");
-//     console.log(data);
-//     let dt = data.dt
-//     console.log(dt)
-//     let timezone = data.timezone * 1000;
-//     let dateTime = new Date(dt * 1000 + timezone);
-//     console.log(dateTime);
-//     console.log(timezone)
-//     let formatDate = dateTime.toLocaleDateString()
-//     console.log(formatDate);
-//     console.log(dateTime.toLocaleTimeString())
-// }
-// test()
-
 // This function displays the current weather info on the page
-
 function displayWeatherData(data) {
-
-    // date and time with time zone
-    let dt = data.dt;
-    let timezoneOffset = data.timezone * 1000;
-    let localTimeStamp = (dt+data.timezone)*1000;
-    let dateTime = new Date(localTimeStamp);
-    // let formatDate = dateTime.toLocaleTimeString(undefined, { timeZoneName: "short" });
-
-    let localTime = dateTime.toLocaleTimeString(undefined, { timeZoneName: "short" });
-    let localDate = dateTime.toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric"});
-    
-    console.log(localTime);
-    console.log(localDate);
-
     let weatherInfo = document.getElementById('weather-info');
     if (!weatherInfo) {
         weatherInfo = document.createElement('div');
         weatherInfo.id = 'weather-info';
         document.body.appendChild(weatherInfo);
     }
-    //day/night
-    let now = Math.floor(Date.now() / 1000);
-    let sunrise = data.sys.sunrise;
-    let sunset = data.sys.sunset;
-    let nowLocal = now+data.timezone
-    let isDaytime = nowLocal > sunrise && nowLocal < sunset;
-    console.log(sunrise)
-    console.log(sunset)
-    console.log(now)
-    if (isDaytime) {
-        // document.documentElement.style.setProperty("background-color", "blue");
-        document.body.style.backgroundColor = 'blue';
-        document.documentElement.style.setProperty("--font-color", "var(--dark-font-color)");
-    } else {
-        // document.documentElement.style.setProperty("background-color", "red)");
-        document.body.style.backgroundColor = 'red';
-        document.documentElement.style.setProperty("--font-color", "var(--light-font-color)");
-    }
-
-    const container = document.getElementById("weather-animations");
-    // condition = data.weather[0].main.toLowerCase();
-    animateWeather(data.weather[0].main.toLowerCase());
-    
     weatherInfo.innerHTML = `
         <h2>Weather for ${data.name}, ${data.sys.country}</h2>
-        <p><strong>Date:</strong> ${localDate}</p>
-        <p><strong>Time:</strong> ${localTime}</p>
+        <p><strong>Date:</strong> ${getUTCDate()}</p>
+        <p><strong>Time:</strong> ${getUTCHours() && getUTCMinutes() && getUTCSeconds()}</p>
         <p><strong>Temperature:</strong> ${data.main.temp}°C</p>
         <p><strong>Feels Like:</strong> ${data.main.feels_like}°C</p>
         <p><strong>Weather:</strong> ${data.weather[0].main} (${data.weather[0].description})</p>
         <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
         <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
     `;
+    //day/night
+    let now = Math.floor(Date.now() / 1000);
+    let sunrise = data.sys.sunrise;
+    let sunset = data.sys.sunset;
+    let isDaytime = (now > sunrise && now < sunset);
+
+    if (isDaytime) {
+        document.documentElement.style.setProperty("--bg-color", "var(--light-bg-color)");
+        document.documentElement.style.setProperty("--font-color", "var(--dark-font-color)");
+    } else {
+        document.documentElement.style.setProperty("--bg-color", "var(--dark-bg-color)");
+        document.documentElement.style.setProperty("--font-color", "var(--light-font-color)");
+    };
 }
 
 // This function displays the 3-hour and 5-day forecast
@@ -168,46 +124,76 @@ function displayForecastData(data) {
     forecastInfo.innerHTML = forecastHTML;
 }
 
-let rainInterval;
-let cloudInterval;
-let condition = "";
+//animations for background and weather
+let rainEffect;
+let cloudEffect;
 
-function animateWeather(condition) {
-    clearAnimations();
-    if (condition.includes("rain")) {
-        rainInterval = setInterval(raindrops, 200);
-    }
-    if (condition.includes("cloud")) {
-        cloudInterval = setInterval(clouds, 5000);
+// date and time with time zone
+const localTime = new Date().toLocaleTimeString(undefined, { timeZoneName: "short" });
+const localDate = new Date().toLocaleDateString(undefined, { weekday: "long", year: "numeric", month: "long", day: "numeric" });
+
+
+
+//test buttons for background and weather animations
+document.getElementById("day-night-test").addEventListener("change", testBg);
+
+function testBg() {
+    let now = Math.floor(Date.now() / 1000);
+    let isDaytime = (now > sunrise && now < sunset);
+
+    if (this.checked) {
+        // Invert current theme
+        if (isDaytime) {
+            // Show night
+            document.documentElement.style.setProperty("--bg-color", "var(--dark-bg-color)");
+            document.documentElement.style.setProperty("--font-color", "var(--light-font-color)");
+        } else {
+            // Show day
+            document.documentElement.style.setProperty("--bg-color", "var(--light-bg-color)");
+            document.documentElement.style.setProperty("--font-color", "var(--dark-font-color)");
+        }
+    } else {
+        // Revert to real-time theme
+        if (isDaytime) {
+            document.documentElement.style.setProperty("--bg-color", "var(--light-bg-color)");
+            document.documentElement.style.setProperty("--font-color", "var(--dark-font-color)");
+        } else {
+            document.documentElement.style.setProperty("--bg-color", "var(--dark-bg-color)");
+            document.documentElement.style.setProperty("--font-color", "var(--light-font-color)");
+        }
     }
 }
+const container = document.getElementById("weather-animations");
 
-function clearAnimations() {
-    clearInterval(rainInterval);
-    clearInterval(cloudInterval);
-    const raindrops = container.querySelectorAll('.raindrop');
-    const clouds = container.querySelectorAll('.cloud');
-    raindrops.forEach(drop => drop.remove());
-    clouds.forEach(cloud => cloud.remove());
-}
+let condition = data.weather[0].main.toLowerCase();
 
+function animateWeather() {
+    if (condition.includes("rain")) { raindrops };
+    if (condition.includes("clouds")) { clouds };
+    if (condition.includes("rain") && (condition.includes("clouds"))) { raindrops(); clouds() };
+};
+
+// rain animation
 function raindrops() {
     let drop = document.createElement("div");
     drop.classList.add("raindrop");
     let randomLeft = Math.random() * window.innerWidth;
     drop.style.left = randomLeft + "px";
+    //determins the speed of the rain drops - can change this later for different rain types?
     let fallSpeed = 0.5 + Math.random() * 0.5;
     drop.style.animationDuration = fallSpeed + "s";
     container.appendChild(drop);
     setTimeout(function () {
         container.removeChild(drop);
     }, 1000);
-};
+    //create raindrops every 200 miliseconds - change this for different types of rain in future(is drizzel, showers, heavy rain etc)?
+    setInterval(raindrops, 200);
+}
 
+//clouds
 function clouds() {
     let cloud = document.createElement("div");
     cloud.classList.add("cloud");
-    cloud.style.left = "-200px";
     let randomTop = Math.random() * window.innerHeight;
     cloud.style.top = randomTop + "px";
     let speed = 20 + Math.random() * 20;
@@ -215,8 +201,9 @@ function clouds() {
     container.appendChild(cloud);
     setTimeout(function () {
         container.removeChild(cloud);
-    }, 50000);
+    }, 5000);
+    setInterval(clouds, 5000);
 }
 
-animateWeather();
-
+let rainTest = document.getElementById("");
+let cloudsTest = document.getElementById("")

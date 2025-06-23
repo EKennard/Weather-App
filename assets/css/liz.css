@@ -15,10 +15,15 @@
   --bg-color: var(--light-bg-color);
   --font-color: var(--dark-font-color);
 }
-
+/* 
 body {
   background-color: var(--light-bg-color);
+} */
+
+.test1 {
+  background-color: #03045e;
 }
+
 
 h1,
 h2,
