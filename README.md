@@ -1,4 +1,4 @@
-![page image](readme-images/main.png))<div align="center">
+![page image](readme-images/main.png)<div align="center">
 <h1 align="center">☀️ Weather Web App ❄️</h1>
 <p align="center">☀️❄️☁️🌦️💧🌤️⚡
 
