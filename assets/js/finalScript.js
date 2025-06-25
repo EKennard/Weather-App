@@ -17,8 +17,9 @@ searchButton.addEventListener('click', () => {
 
 // Fetch current weather
 async function fetchWeatherData(city) {
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
-    try {
+    const unit = isCelsius ? 'metric' : 'imperial';
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}&units=${unit}`;
+        try {
         const response = await fetch(apiUrl);
         if (!response.ok) {
             alert('City not found!');
@@ -33,7 +34,8 @@ async function fetchWeatherData(city) {
 
 // Fetch 5-day / 3-hour forecast
 async function fetchForecastData(city) {
-    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=metric`;
+    const unit = isCelsius ? 'metric' : 'imperial';
+    const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)}&appid=${apiKey}&units=${unit}`;
     try {
         const response = await fetch(forecastUrl);
         if (!response.ok) {
@@ -78,8 +80,9 @@ function displayWeatherData(data) {
     iconEl.alt = data.weather[0].description;
     iconEl.style.display = 'block';
 
-    tempEl.textContent = `Temperature: ${data.main.temp}°C`;
-    feelsLikeEl.textContent = `Feels Like: ${data.main.feels_like}°C`;
+    const unitSymbol = isCelsius ? '°C' : '°F';
+    tempEl.textContent = `Temperature: ${data.main.temp}${unitSymbol}`;
+    feelsLikeEl.textContent = `Feels Like: ${data.main.feels_like}${unitSymbol}`;
     weatherEl.textContent = `Weather: ${data.weather[0].main} (${data.weather[0].description})`;
     humidityEl.textContent = `Humidity: ${data.main.humidity}%`;
     windEl.textContent = `Wind Speed: ${data.wind.speed} m/s`;
@@ -111,7 +114,7 @@ function displayForecastData(data) {
                         <h3>${date}</h3>
                         <img src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png"
                              alt="${forecast.weather[0].description}" class="mb-2" style="width: 60px;">
-                        <p>${forecast.main.temp}°C</p>
+                             <p>${forecast.main.temp}${isCelsius ? '°C' : '°F'}</p>
                         <p>${forecast.weather[0].main} (${forecast.weather[0].description})</p>
                     </div>
                 </div>
@@ -178,3 +181,16 @@ function clouds() {
     container.appendChild(cloud);
     setTimeout(() => container.removeChild(cloud), 50000);
 }
+let isCelsius = true; 
+
+const toggleButton = document.getElementById('unit-toggle');
+toggleButton.addEventListener('click', () => {
+    isCelsius = !isCelsius;
+    toggleButton.textContent = isCelsius ? 'Switch to °F' : 'Switch to °C';
+
+    const city = inputText.value.trim();
+    if (city) {
+        fetchWeatherData(city);
+        fetchForecastData(city);
+    }
+});
